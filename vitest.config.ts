@@ -68,7 +68,7 @@ export default defineConfig({
     watch: false,
     
     // 报告器
-    reporter: ['verbose', 'junit'],
+    reporters: ['verbose', 'junit'],
     
     // 输出目录
     outputFile: {

@@ -8,7 +8,7 @@ const config: Config = {
     './content/**/*.{js,ts,jsx,tsx,mdx}',
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: ['class'],
+  darkMode: 'class',
   theme: {
     container: {
       center: true,
