@@ -1,0 +1,1557 @@
+/* 代码高亮样式 - 支持明暗主题切换 */
+
+/* 基础代码块样式 */
+pre[class*="language-"] {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  overflow-x: auto;
+  font-family: var(--font-geist-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+}
+
+code[class*="language-"] {
+  font-family: var(--font-geist-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+  background: none;
+  text-shadow: none;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  tab-size: 2;
+}
+
+/* 亮色主题代码高亮 */
+:root {
+  --syntax-bg: 249 250 251;
+  --syntax-comment: 107 114 126;
+  --syntax-keyword: 147 51 234;
+  --syntax-string: 34 197 94;
+  --syntax-number: 245 101 101;
+  --syntax-function: 59 130 246;
+  --syntax-operator: 168 85 247;
+  --syntax-punctuation: 75 85 99;
+  --syntax-variable: 16 185 129;
+  --syntax-class: 251 146 60;
+  --syntax-tag: 239 68 68;
+  --syntax-attr-name: 34 197 94;
+  --syntax-attr-value: 245 101 101;
+  --syntax-builtin: 168 85 247;
+  --syntax-constant: 16 185 129;
+  --syntax-regex: 251 146 60;
+  --syntax-escape: 239 68 68;
+  --syntax-important: 239 68 68;
+  --syntax-selection: 59 130 246 / 0.2;
+}
+
+/* 暗色主题代码高亮 */
+.dark {
+  --syntax-bg: 15 23 42;
+  --syntax-comment: 148 163 184;
+  --syntax-keyword: 196 181 253;
+  --syntax-string: 74 222 128;
+  --syntax-number: 248 113 113;
+  --syntax-function: 96 165 250;
+  --syntax-operator: 196 181 253;
+  --syntax-punctuation: 148 163 184;
+  --syntax-variable: 52 211 153;
+  --syntax-class: 251 191 36;
+  --syntax-tag: 248 113 113;
+  --syntax-attr-name: 74 222 128;
+  --syntax-attr-value: 248 113 113;
+  --syntax-builtin: 196 181 253;
+  --syntax-constant: 52 211 153;
+  --syntax-regex: 251 191 36;
+  --syntax-escape: 248 113 113;
+  --syntax-important: 248 113 113;
+  --syntax-selection: 96 165 250 / 0.2;
+}
+
+/* Token 样式 */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: hsl(var(--syntax-comment));
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: hsl(var(--syntax-punctuation));
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: hsl(var(--syntax-number));
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: hsl(var(--syntax-string));
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: hsl(var(--syntax-operator));
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: hsl(var(--syntax-keyword));
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: hsl(var(--syntax-function));
+  font-weight: 600;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: hsl(var(--syntax-variable));
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* 语言特定样式 */
+.language-json .token.property {
+  color: hsl(var(--syntax-attr-name));
+}
+
+.language-markdown .token.title {
+  color: hsl(var(--syntax-function));
+  font-weight: bold;
+}
+
+.language-markdown .token.code {
+  color: hsl(var(--syntax-string));
+}
+
+/* 行高亮 */
+.highlight-line {
+  background: hsl(var(--syntax-selection));
+  display: block;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+  border-left: 4px solid hsl(var(--syntax-function));
+}
+
+/* 行号样式 */
+.line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 1.5rem;
+  left: 0;
+  width: 3rem;
+  letter-spacing: -1px;
+  border-right: 1px solid hsl(var(--border));
+}
+
+.line-numbers .line-numbers-rows > span {
+  display: block;
+  counter-increment: linenumber;
+  color: hsl(var(--muted-foreground));
+  padding-right: 0.8rem;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.line-numbers .line-numbers-rows > span::before {
+  content: counter(linenumber);
+}
+
+.line-numbers pre {
+  padding-left: 4rem;
+}
+
+/* 代码块头部信息 */
+.code-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  font-family: var(--font-geist-mono);
+  z-index: 10;
+}
+
+/* 复制按钮样式 */
+.copy-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  z-index: 10;
+}
+
+pre[class*="language-"]:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+.copy-button.copied {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+/* diff 语法高亮 */
+.token.deleted {
+  background: hsl(0 100% 67% / 0.1);
+  color: hsl(0 100% 67%);
+}
+
+.token.inserted {
+  background: hsl(120 100% 40% / 0.1);
+  color: hsl(120 100% 40%);
+}
+
+/* 内联代码样式 */
+:not(pre) > code[class*="language-"] {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+  white-space: normal;
+}
+
+/* 代码块滚动优化 */
+pre[class*="language-"]::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: var(--radius-sm);
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: var(--radius-sm);
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  pre[class*="language-"] {
+    margin: 1rem -1rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .line-numbers pre {
+    padding-left: 3rem;
+  }
+  
+  .line-numbers .line-numbers-rows {
+    width: 2.5rem;
+  }
+  
+  .copy-button {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  pre[class*="language-"] {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+  
+  .copy-button,
+  .code-header {
+    display: none !important;
+  }
+  
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #6a737d !important;
+  }
+  
+  .token.keyword,
+  .token.function {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+  
+  .token.string {
+    color: #032f62 !important;
+  }
+}
+
+/* 代码块折叠功能样式 - 处理超长代码块，提升阅读体验 */
+
+/* 折叠容器基础样式 */
+.code-collapsible-container {
+  position: relative;
+  overflow: hidden;
+  transition: max-height var(--animation-duration-normal) var(--animation-ease);
+}
+
+/* 折叠状态 - 限制高度并添加渐变遮罩 */
+.code-collapsible-container.collapsed {
+  max-height: 400px;
+}
+
+.code-collapsible-container.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    hsl(var(--muted) / 0.8) 50%,
+    hsl(var(--muted)) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 展开状态 - 移除高度限制 */
+.code-collapsible-container.expanded {
+  max-height: none;
+}
+
+.code-collapsible-container.expanded::after {
+  display: none;
+}
+
+/* 折叠/展开按钮样式 */
+.code-collapse-toggle {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  box-shadow: var(--shadow-sm);
+}
+
+.code-collapse-toggle:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+  box-shadow: var(--shadow-md);
+}
+
+.code-collapse-toggle:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+/* 折叠状态指示器 */
+.code-collapse-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.code-collapse-indicator::after {
+  content: '▼';
+  font-size: 0.6rem;
+  transition: transform var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-collapsible-container.expanded .code-collapse-indicator::after {
+  transform: rotate(180deg);
+}
+
+/* 长代码块自动折叠检测 - 根据内容长度自动应用折叠功能 */
+.code-auto-collapsible {
+  /* 基础样式，等待 JavaScript 检测 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 自动折叠阈值检测 */
+.code-auto-collapsible[data-lines] {
+  /* JavaScript 会设置 data-lines 属性来标识行数 */
+}
+
+/* 超过 20 行的代码块自动折叠 */
+.code-auto-collapsible[data-lines="long"] {
+  max-height: 400px;
+  transition: max-height var(--animation-duration-normal) var(--animation-ease);
+}
+
+.code-auto-collapsible[data-lines="long"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    hsl(var(--muted) / 0.8) 50%,
+    hsl(var(--muted)) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 超过 15 行但少于 20 行的代码块显示展开提示 */
+.code-auto-collapsible[data-lines="medium"] {
+  position: relative;
+}
+
+.code-auto-collapsible[data-lines="medium"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    hsl(var(--muted) / 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 少于 15 行的代码块保持原样 */
+.code-auto-collapsible[data-lines="short"] {
+  /* 保持默认样式，无需特殊处理 */
+}
+
+/* 自动添加的折叠按钮 */
+.code-auto-collapsible[data-lines="long"] .auto-collapse-toggle,
+.code-auto-collapsible[data-lines="medium"] .auto-collapse-toggle {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  animation: fadeInUp var(--animation-duration-normal) var(--animation-ease) 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.code-auto-collapsible[data-lines="long"] .auto-collapse-toggle:hover,
+.code-auto-collapsible[data-lines="medium"] .auto-collapse-toggle:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+  box-shadow: var(--shadow-md);
+}
+
+/* 展开状态 */
+.code-auto-collapsible.expanded {
+  max-height: none !important;
+}
+
+.code-auto-collapsible.expanded::after {
+  display: none;
+}
+
+.code-auto-collapsible.expanded .auto-collapse-toggle::before {
+  content: "收起代码 ";
+}
+
+.code-auto-collapsible:not(.expanded) .auto-collapse-toggle::before {
+  content: "展开完整代码 ";
+}
+
+/* 行数指示器（显示在按钮中） */
+.code-auto-collapsible .auto-collapse-toggle::after {
+  content: "(" attr(data-total-lines) " 行)";
+  opacity: 0.7;
+  margin-left: 0.25rem;
+}
+
+/* 渐进式增强 - 无 JavaScript 时的回退 */
+.no-js .code-auto-collapsible[data-lines="long"] {
+  max-height: none;
+}
+
+.no-js .code-auto-collapsible[data-lines="long"]::after {
+  display: none;
+}
+
+.no-js .auto-collapse-toggle {
+  display: none;
+}
+
+/* 代码行计数器（用于判断是否需要折叠） */
+.code-line-count {
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  visibility: hidden;
+  white-space: pre;
+  font-family: var(--font-geist-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .code-collapsible-container.collapsed {
+    max-height: 300px;
+  }
+  
+  .code-collapse-toggle {
+    bottom: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* 增强代码高亮主题系统 - 多主题支持和动态切换 */
+
+/* 主题选择器容器 */
+.syntax-theme-selector {
+  position: absolute;
+  top: 0.75rem;
+  right: 4rem;
+  z-index: 15;
+}
+
+.syntax-theme-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.syntax-theme-button {
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.syntax-theme-button:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.syntax-theme-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 120px;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  z-index: 20;
+}
+
+.syntax-theme-dropdown.open .syntax-theme-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.syntax-theme-option {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color var(--animation-duration-fast) var(--animation-ease);
+}
+
+.syntax-theme-option:hover {
+  background: hsl(var(--muted));
+}
+
+.syntax-theme-option.active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* 主题切换动画效果 */
+.syntax-theme-transition {
+  transition: all var(--animation-duration-normal) var(--animation-ease);
+}
+
+/* 预定义主题 - GitHub Light */
+.syntax-theme-github-light {
+  --syntax-bg: 255 255 255;
+  --syntax-comment: 106 115 125;
+  --syntax-keyword: 215 58 73;
+  --syntax-string: 3 47 98;
+  --syntax-number: 0 92 197;
+  --syntax-function: 111 66 193;
+  --syntax-operator: 215 58 73;
+  --syntax-punctuation: 36 41 46;
+  --syntax-variable: 227 98 9;
+  --syntax-class: 152 104 1;
+  --syntax-tag: 34 134 58;
+  --syntax-attr-name: 0 92 197;
+  --syntax-attr-value: 3 47 98;
+  --syntax-builtin: 111 66 193;
+  --syntax-constant: 0 92 197;
+  --syntax-regex: 3 47 98;
+  --syntax-escape: 215 58 73;
+  --syntax-important: 215 58 73;
+  --syntax-selection: 0 92 197 / 0.15;
+}
+
+/* 预定义主题 - GitHub Dark */
+.syntax-theme-github-dark {
+  --syntax-bg: 13 17 23;
+  --syntax-comment: 139 148 158;
+  --syntax-keyword: 255 123 114;
+  --syntax-string: 164 255 166;
+  --syntax-number: 121 192 255;
+  --syntax-function: 210 168 255;
+  --syntax-operator: 255 123 114;
+  --syntax-punctuation: 201 209 217;
+  --syntax-variable: 255 184 108;
+  --syntax-class: 255 206 84;
+  --syntax-tag: 126 231 135;
+  --syntax-attr-name: 121 192 255;
+  --syntax-attr-value: 164 255 166;
+  --syntax-builtin: 210 168 255;
+  --syntax-constant: 121 192 255;
+  --syntax-regex: 164 255 166;
+  --syntax-escape: 255 123 114;
+  --syntax-important: 255 123 114;
+  --syntax-selection: 121 192 255 / 0.2;
+}
+
+/* 预定义主题 - VS Code Dark+ */
+.syntax-theme-vscode-dark {
+  --syntax-bg: 30 30 30;
+  --syntax-comment: 106 153 85;
+  --syntax-keyword: 86 156 214;
+  --syntax-string: 206 145 120;
+  --syntax-number: 181 206 168;
+  --syntax-function: 220 220 170;
+  --syntax-operator: 212 212 212;
+  --syntax-punctuation: 212 212 212;
+  --syntax-variable: 156 220 254;
+  --syntax-class: 78 201 176;
+  --syntax-tag: 86 156 214;
+  --syntax-attr-name: 156 220 254;
+  --syntax-attr-value: 206 145 120;
+  --syntax-builtin: 86 156 214;
+  --syntax-constant: 78 201 176;
+  --syntax-regex: 209 105 105;
+  --syntax-escape: 255 206 84;
+  --syntax-important: 255 206 84;
+  --syntax-selection: 86 156 214 / 0.2;
+}
+
+/* 预定义主题 - Dracula */
+.syntax-theme-dracula {
+  --syntax-bg: 40 42 54;
+  --syntax-comment: 98 114 164;
+  --syntax-keyword: 255 121 198;
+  --syntax-string: 241 250 140;
+  --syntax-number: 189 147 249;
+  --syntax-function: 80 250 123;
+  --syntax-operator: 255 121 198;
+  --syntax-punctuation: 248 248 242;
+  --syntax-variable: 255 184 108;
+  --syntax-class: 80 250 123;
+  --syntax-tag: 255 121 198;
+  --syntax-attr-name: 80 250 123;
+  --syntax-attr-value: 241 250 140;
+  --syntax-builtin: 139 233 253;
+  --syntax-constant: 189 147 249;
+  --syntax-regex: 241 250 140;
+  --syntax-escape: 255 184 108;
+  --syntax-important: 255 85 85;
+  --syntax-selection: 255 121 198 / 0.2;
+}
+
+/* 自定义主题配色生成器支持 - 允许用户创建和使用自定义代码高亮主题 */
+.syntax-theme-custom {
+  /* 用户可以通过 CSS 变量自定义主题色彩 */
+  /* 这些变量会被 JavaScript 动态设置 */
+  
+  /* 默认自定义主题基础色彩（可被覆盖） */
+  --syntax-bg: var(--custom-bg, 24 24 27);
+  --syntax-comment: var(--custom-comment, 113 113 122);
+  --syntax-keyword: var(--custom-keyword, 168 85 247);
+  --syntax-string: var(--custom-string, 34 197 94);
+  --syntax-number: var(--custom-number, 251 146 60);
+  --syntax-function: var(--custom-function, 59 130 246);
+  --syntax-operator: var(--custom-operator, 244 63 94);
+  --syntax-punctuation: var(--custom-punctuation, 161 161 170);
+  --syntax-variable: var(--custom-variable, 14 165 233);
+  --syntax-class: var(--custom-class, 245 158 11);
+  --syntax-tag: var(--custom-tag, 239 68 68);
+  --syntax-attr-name: var(--custom-attr-name, 16 185 129);
+  --syntax-attr-value: var(--custom-attr-value, 34 197 94);
+  --syntax-builtin: var(--custom-builtin, 168 85 247);
+  --syntax-constant: var(--custom-constant, 99 102 241);
+  --syntax-regex: var(--custom-regex, 245 101 101);
+  --syntax-escape: var(--custom-escape, 251 191 36);
+  --syntax-important: var(--custom-important, 239 68 68);
+  --syntax-selection: var(--custom-selection, 59 130 246 / 0.2);
+}
+
+/* 自定义主题预设变体 */
+.syntax-theme-custom-blue {
+  --custom-bg: 15 23 42;
+  --custom-comment: 100 116 139;
+  --custom-keyword: 59 130 246;
+  --custom-string: 34 197 94;
+  --custom-number: 96 165 250;
+  --custom-function: 147 197 253;
+  --custom-operator: 59 130 246;
+  --custom-punctuation: 148 163 184;
+  --custom-variable: 34 211 238;
+  --custom-class: 251 191 36;
+  --custom-tag: 59 130 246;
+  --custom-attr-name: 34 197 94;
+  --custom-attr-value: 34 197 94;
+  --custom-builtin: 147 197 253;
+  --custom-constant: 96 165 250;
+  --custom-regex: 251 191 36;
+  --custom-escape: 248 113 113;
+  --custom-important: 248 113 113;
+  --custom-selection: 59 130 246 / 0.2;
+}
+
+.syntax-theme-custom-purple {
+  --custom-bg: 46 16 101;
+  --custom-comment: 139 69 222;
+  --custom-keyword: 196 181 253;
+  --custom-string: 34 197 94;
+  --custom-number: 251 146 60;
+  --custom-function: 244 114 182;
+  --custom-operator: 196 181 253;
+  --custom-punctuation: 203 213 225;
+  --custom-variable: 14 165 233;
+  --custom-class: 251 191 36;
+  --custom-tag: 244 114 182;
+  --custom-attr-name: 34 197 94;
+  --custom-attr-value: 34 197 94;
+  --custom-builtin: 196 181 253;
+  --custom-constant: 168 85 247;
+  --custom-regex: 251 191 36;
+  --custom-escape: 248 113 113;
+  --custom-important: 239 68 68;
+  --custom-selection: 168 85 247 / 0.2;
+}
+
+.syntax-theme-custom-green {
+  --custom-bg: 20 83 45;
+  --custom-comment: 134 239 172;
+  --custom-keyword: 251 191 36;
+  --custom-string: 187 247 208;
+  --custom-number: 96 165 250;
+  --custom-function: 34 197 94;
+  --custom-operator: 251 191 36;
+  --custom-punctuation: 209 213 219;
+  --custom-variable: 147 197 253;
+  --custom-class: 251 146 60;
+  --custom-tag: 34 197 94;
+  --custom-attr-name: 187 247 208;
+  --custom-attr-value: 187 247 208;
+  --custom-builtin: 34 197 94;
+  --custom-constant: 96 165 250;
+  --custom-regex: 251 191 36;
+  --custom-escape: 248 113 113;
+  --custom-important: 239 68 68;
+  --custom-selection: 34 197 94 / 0.2;
+}
+
+/* 自定义主题配色器界面样式 */
+.custom-theme-editor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  max-height: 80vh;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: all var(--animation-duration-normal) var(--animation-ease);
+}
+
+.custom-theme-editor.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.custom-theme-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: hsl(var(--muted));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.custom-theme-editor-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.custom-theme-editor-close {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.custom-theme-editor-close:hover {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+}
+
+.custom-theme-editor-content {
+  padding: 1rem;
+  max-height: calc(80vh - 8rem);
+  overflow-y: auto;
+}
+
+.color-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: var(--radius-md);
+}
+
+.color-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  min-width: 120px;
+}
+
+.color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-input {
+  width: 40px;
+  height: 32px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: var(--radius-sm);
+}
+
+.color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: var(--radius-sm);
+}
+
+.color-value-input {
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  font-family: var(--font-geist-mono);
+  width: 80px;
+}
+
+.custom-theme-editor-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.3);
+}
+
+.custom-theme-editor-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.custom-theme-editor-button.primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.custom-theme-editor-button.secondary {
+  background: transparent;
+  color: hsl(var(--foreground));
+}
+
+.custom-theme-editor-button:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.custom-theme-editor-button.primary:hover {
+  background: hsl(var(--primary));
+  opacity: 0.9;
+}
+
+.custom-theme-editor-button.secondary:hover {
+  background: hsl(var(--muted));
+}
+
+/* 主题预览区域 */
+.custom-theme-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: hsl(var(--muted));
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--border));
+}
+
+.custom-theme-preview-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+.custom-theme-preview-code {
+  background: hsl(var(--syntax-bg));
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-geist-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+/* 主题导入/导出功能 */
+.custom-theme-io {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: hsl(var(--muted) / 0.5);
+  border-radius: var(--radius-md);
+}
+
+.custom-theme-export-textarea {
+  width: 100%;
+  height: 80px;
+  padding: 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-family: var(--font-geist-mono);
+  font-size: 0.75rem;
+  resize: vertical;
+}
+
+.custom-theme-io-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.custom-theme-io-button {
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.custom-theme-io-button:hover {
+  background: hsl(var(--muted));
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .custom-theme-editor {
+    width: 95vw;
+    max-height: 90vh;
+  }
+  
+  .color-input-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .color-input-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .custom-theme-editor-actions {
+    flex-direction: column;
+  }
+}
+
+/* 语法高亮优化 - 增强可读性 */
+.enhanced-syntax {
+  /* 关键字特殊效果 */
+  .token.keyword {
+    text-shadow: 0 0 2px hsl(var(--syntax-keyword) / 0.3);
+  }
+  
+  /* 字符串引号样式 */
+  .token.string::before,
+  .token.string::after {
+    opacity: 0.7;
+  }
+  
+  /* 函数名下划线 */
+  .token.function {
+    border-bottom: 1px dotted hsl(var(--syntax-function) / 0.5);
+  }
+  
+  /* 注释倾斜优化 */
+  .token.comment {
+    font-style: italic;
+    opacity: 0.8;
+  }
+}
+
+/* 主题切换动画 */
+@keyframes theme-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.syntax-theme-switching {
+  animation: theme-fade-in var(--animation-duration-normal) var(--animation-ease);
+}
+
+/* 响应式主题选择器 */
+@media (max-width: 768px) {
+  .syntax-theme-selector {
+    top: 0.5rem;
+    right: 3rem;
+  }
+  
+  .syntax-theme-button {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.65rem;
+  }
+  
+  .syntax-theme-menu {
+    min-width: 100px;
+  }
+}
+
+/* 优化代码块交互体验 - 提升用户操作便利性 */
+
+/* 代码块全屏查看模式 */
+.code-fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: hsl(var(--background) / 0.95);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--animation-duration-normal) var(--animation-ease);
+}
+
+.code-fullscreen-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.code-fullscreen-container {
+  width: 100%;
+  max-width: 95vw;
+  max-height: 95vh;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  transform: scale(0.9);
+  transition: transform var(--animation-duration-normal) var(--animation-ease);
+}
+
+.code-fullscreen-overlay.active .code-fullscreen-container {
+  transform: scale(1);
+}
+
+.code-fullscreen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: hsl(var(--muted));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.code-fullscreen-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.code-fullscreen-close {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-fullscreen-close:hover {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+}
+
+.code-fullscreen-content {
+  height: calc(95vh - 5rem);
+  overflow: auto;
+}
+
+/* 代码搜索和导航功能 */
+.code-search-container {
+  position: absolute;
+  top: 0.75rem;
+  right: 6rem;
+  z-index: 20;
+}
+
+.code-search-input {
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  width: 120px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-search-container.active .code-search-input {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.code-search-button {
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-search-button:hover,
+.code-search-button.active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.code-search-results {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  margin-top: 0.25rem;
+  display: none;
+}
+
+.code-search-results.show {
+  display: block;
+}
+
+.code-search-result {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid hsl(var(--border));
+  cursor: pointer;
+  transition: background-color var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-search-result:hover {
+  background: hsl(var(--muted));
+}
+
+.code-search-result:last-child {
+  border-bottom: none;
+}
+
+.code-search-highlight {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+  padding: 0.125rem 0.25rem;
+  border-radius: var(--radius-sm);
+}
+
+/* 语法错误提示 */
+.syntax-error-indicator {
+  position: relative;
+}
+
+.syntax-error-line {
+  background: hsl(var(--destructive) / 0.1);
+  border-left: 3px solid hsl(var(--destructive));
+  position: relative;
+}
+
+.syntax-error-marker {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.5rem;
+  height: 0.5rem;
+  background: hsl(var(--destructive));
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.syntax-error-tooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  z-index: 30;
+}
+
+.syntax-error-line:hover .syntax-error-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 代码格式化功能 */
+.code-format-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 8rem;
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  z-index: 15;
+}
+
+.code-format-button:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.code-format-button.formatting {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.code-format-animation {
+  animation: format-pulse 1s ease-in-out;
+}
+
+@keyframes format-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* 代码行跳转功能 */
+.code-line-jump {
+  position: absolute;
+  top: 0.75rem;
+  right: 10rem;
+  z-index: 15;
+}
+
+.code-line-jump-input {
+  padding: 0.25rem 0.5rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-size: 0.75rem;
+  width: 60px;
+  text-align: center;
+}
+
+.code-line-jump-input:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* 代码选择和复制增强 */
+.code-selection-toolbar {
+  position: absolute;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+  z-index: 25;
+}
+
+.code-selection-toolbar.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.code-selection-button {
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-selection-button:hover {
+  background: hsl(var(--muted));
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .code-fullscreen-container {
+    max-width: 98vw;
+    max-height: 98vh;
+  }
+  
+  .code-search-input {
+    width: 100px;
+  }
+  
+  .code-format-button,
+  .code-search-container,
+  .code-line-jump {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0.25rem;
+    display: inline-block;
+  }
+  
+  .code-selection-toolbar {
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+}
+
+/* 键盘快捷键支持 */
+.code-shortcuts-help {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  font-size: 0.7rem;
+  color: hsl(var(--muted-foreground));
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--animation-duration-fast) var(--animation-ease);
+}
+
+.code-shortcuts-help.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.code-shortcut {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.code-shortcut:last-child {
+  margin-bottom: 0;
+}
+
+.code-shortcut-key {
+  font-family: var(--font-geist-mono);
+  background: hsl(var(--background));
+  padding: 0.125rem 0.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid hsl(var(--border));
+}
