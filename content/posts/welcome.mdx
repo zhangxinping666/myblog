@@ -1,0 +1,70 @@
+---
+title: 欢迎来到我的博客
+description: 这是我的第一篇博客文章，介绍了这个博客的技术栈和未来计划。
+date: 2024-01-20
+published: true
+category: 技术
+tags:
+  - Next.js
+  - React
+  - TypeScript
+---
+
+# 欢迎来到我的博客
+
+这是使用 Next.js 14、TypeScript 和 Tailwind CSS 构建的现代化博客系统。
+
+## 技术栈
+
+- **Next.js 14** - React 全栈框架
+- **TypeScript** - 类型安全的 JavaScript
+- **Tailwind CSS** - 实用优先的 CSS 框架
+- **MDX** - Markdown 和 React 组件的结合
+- **Contentlayer** - 内容管理层
+
+## 功能特性
+
+### 🎨 设计
+- 响应式设计，适配各种设备
+- 支持亮色/暗色主题切换
+- 优雅的动画和过渡效果
+
+### ⚡ 性能
+- Turbopack 加速开发构建
+- Million.js 优化渲染性能
+- 自动图片优化
+
+### 📝 内容
+- MDX 支持，可以在 Markdown 中使用 React 组件
+- 语法高亮的代码块
+- 文章分类和标签系统
+
+## 代码示例
+
+```typescript
+// TypeScript 示例代码
+interface BlogPost {
+  title: string
+  description: string
+  date: Date
+  tags: string[]
+}
+
+function BlogCard({ post }: { post: BlogPost }) {
+  return (
+    <div className="p-6 border rounded-lg">
+      <h2>{post.title}</h2>
+      <p>{post.description}</p>
+    </div>
+  )
+}
+```
+
+## 未来计划
+
+1. 添加评论系统
+2. 集成 Newsletter 订阅
+3. 添加搜索功能
+4. 性能优化和 SEO 改进
+
+感谢访问我的博客！

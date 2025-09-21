@@ -3,22 +3,21 @@ import million from 'million/compiler';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 启用实验性功能
-  experimental: {
-    // 启用 Turbopack 用于开发和构建
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  // Turbopack 配置 (Next.js 15+)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
-    // 启用 App Directory
-    appDir: true,
-    // 启用服务器组件
-    serverComponentsExternalPackages: ['sharp', 'onnxruntime-node'],
-    // 优化包导入
+  },
+  
+  // 服务器外部包
+  serverExternalPackages: ['sharp', 'onnxruntime-node'],
+  
+  // 优化包导入
+  experimental: {
     optimizePackageImports: ['lucide-react', 'date-fns'],
   },
 
@@ -125,9 +124,6 @@ const nextConfig = {
 
   // 严格模式
   reactStrictMode: true,
-
-  // SWC Minify
-  swcMinify: true,
 
   // 输出配置
   output: 'standalone',
