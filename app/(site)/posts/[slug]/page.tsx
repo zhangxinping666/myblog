@@ -2,8 +2,10 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { CalendarDays, Clock, Eye, Tag, User, Heart } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { CalendarDays, Clock, Tag, User } from 'lucide-react'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+
+// import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
@@ -14,29 +16,9 @@ import { Comments } from '@/components/features/comments'
 import { AuthorCard } from '@/components/blog/author-card'
 import { RelatedPosts } from '@/components/blog/related-posts'
 import { PostMeta } from '@/components/blog/post-meta'
-// import { MDXComponents } from '@/components/mdx/mdx-components'
 import { formatDate } from '@/lib/utils/format'
-// import { useReadingProgress } from '@/components/features/analytics'
-
-interface Post {
-  slug: string
-  title: string
-  description: string
-  content: string
-  publishedAt: string
-  updatedAt?: string
-  category: string
-  tags: string[]
-  author: {
-    name: string
-    avatar?: string
-    bio?: string
-  }
-  readingTime: number
-  views?: number
-  likes?: number
-  coverImage?: string
-}
+import { getPostBySlug, getAllPosts, getRelatedPosts } from '@/lib/mdx/mdx'
+import { siteConfig } from '@/lib/config/site'
 
 interface PostPageProps {
   params: {
@@ -44,91 +26,17 @@ interface PostPageProps {
   }
 }
 
-// 模拟获取文章数据
-async function getPost(slug: string): Promise<Post | null> {
-  // 这里应该从 CMS 或数据库获取数据
-  // 现在返回模拟数据
-  if (slug === 'example-post') {
-    return {
-      slug: 'example-post',
-      title: 'Next.js 14 博客系统搭建指南',
-      description: '从零开始构建一个现代化的 Next.js 博客系统，包含完整的功能和最佳实践。',
-      content: `
-# Next.js 14 博客系统搭建指南
-
-在这篇文章中，我将带你从零开始构建一个现代化的 Next.js 博客系统。
-
-## 技术栈选择
-
-我们选择以下技术栈：
-
-- **Next.js 14** - React 全栈框架
-- **TypeScript** - 类型安全
-- **Tailwind CSS** - 样式框架
-- **MDX** - Markdown + JSX
-
-## 项目初始化
-
-首先创建一个新的 Next.js 项目：
-
-\`\`\`bash
-npx create-next-app@latest my-blog --typescript --tailwind --app
-\`\`\`
-
-## 配置文件结构
-
-推荐的文件结构如下：
-
-\`\`\`
-my-blog/
-├── app/
-├── components/
-├── lib/
-├── content/
-└── public/
-\`\`\`
-
-这样我们就完成了基本的博客系统搭建！
-      `,
-      publishedAt: '2024-01-15',
-      updatedAt: '2024-01-20',
-      category: '前端开发',
-      tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-      author: {
-        name: '张三',
-        avatar: '/images/avatar.jpg',
-        bio: '全栈开发工程师，专注于 React 生态系统',
-      },
-      readingTime: 8,
-      views: 1234,
-      likes: 56,
-      coverImage: '/images/posts/nextjs-blog.jpg',
-    }
-  }
-
-  return null
+// 生成静态参数
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
 }
 
-// 获取相关文章
-async function getRelatedPosts(/* currentSlug: string */): Promise<Post[]> {
-  // 模拟相关文章数据
-  return [
-    {
-      slug: 'react-hooks-guide',
-      title: 'React Hooks 完全指南',
-      description: '深入理解 React Hooks 的使用方法和最佳实践',
-      content: '',
-      publishedAt: '2024-01-10',
-      category: '前端开发',
-      tags: ['React', 'Hooks'],
-      author: { name: '张三' },
-      readingTime: 6,
-    },
-  ]
-}
-
+// 生成元数据
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug)
+  const post = await getPostBySlug(params.slug)
 
   if (!post) {
     return {
@@ -137,36 +45,65 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   }
 
   return {
-    title: post.title,
-    description: post.description,
-    authors: [{ name: post.author.name }],
-    // publishedTime 和 modifiedTime 不是 Metadata 的有效属性
+    title: post.frontMatter.title,
+    description: post.frontMatter.description,
+    authors: [{ name: post.frontMatter.author || siteConfig.author }],
     openGraph: {
-      title: post.title,
-      description: post.description,
+      title: post.frontMatter.title,
+      description: post.frontMatter.description,
       type: 'article',
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-      authors: [post.author.name],
-      images: post.coverImage ? [post.coverImage] : undefined,
+      publishedTime: post.frontMatter.date,
+      authors: [post.frontMatter.author || siteConfig.author],
+      images: post.frontMatter.image ? [post.frontMatter.image] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.description,
-      images: post.coverImage ? [post.coverImage] : undefined,
+      title: post.frontMatter.title,
+      description: post.frontMatter.description,
+      images: post.frontMatter.image ? [post.frontMatter.image] : undefined,
     },
   }
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPost(params.slug)
+  const post = await getPostBySlug(params.slug)
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = await getRelatedPosts()
+  const relatedPosts = await getRelatedPosts(params.slug, 3)
+
+  // MDX 组件映射
+  const components = {
+    h1: (props: any) => <h1 className="text-4xl font-bold mt-8 mb-4" {...props} />,
+    h2: (props: any) => <h2 className="text-3xl font-bold mt-6 mb-3" {...props} />,
+    h3: (props: any) => <h3 className="text-2xl font-semibold mt-4 mb-2" {...props} />,
+    p: (props: any) => <p className="mb-4 leading-7" {...props} />,
+    ul: (props: any) => <ul className="list-disc list-inside mb-4 space-y-2" {...props} />,
+    ol: (props: any) => <ol className="list-decimal list-inside mb-4 space-y-2" {...props} />,
+    li: (props: any) => <li className="ml-4" {...props} />,
+    code: (props: any) => {
+      // 内联代码
+      if (!props.className) {
+        return <code className="px-1.5 py-0.5 bg-muted rounded text-sm font-mono" {...props} />
+      }
+      // 代码块
+      return <code {...props} />
+    },
+    pre: (props: any) => (
+      <pre className="bg-muted/50 rounded-lg p-4 overflow-x-auto mb-4" {...props} />
+    ),
+    blockquote: (props: any) => (
+      <blockquote className="border-l-4 border-primary pl-4 italic my-4" {...props} />
+    ),
+    a: (props: any) => (
+      <a className="text-primary hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+    ),
+    hr: () => <Separator className="my-8" />,
+    strong: (props: any) => <strong className="font-semibold" {...props} />,
+    em: (props: any) => <em className="italic" {...props} />,
+  }
 
   return (
     <div className="container py-8">
@@ -180,21 +117,25 @@ export default async function PostPage({ params }: PostPageProps) {
               <Link href="/" className="hover:text-foreground">首页</Link>
               <span>/</span>
               <Link href="/posts" className="hover:text-foreground">文章</Link>
+              {post.frontMatter.category && (
+                <>
+                  <span>/</span>
+                  <Link href={`/categories/${post.frontMatter.category}`} className="hover:text-foreground">
+                    {post.frontMatter.category}
+                  </Link>
+                </>
+              )}
               <span>/</span>
-              <Link href={`/categories/${post.category}`} className="hover:text-foreground">
-                {post.category}
-              </Link>
-              <span>/</span>
-              <span className="text-foreground">{post.title}</span>
+              <span className="text-foreground truncate">{post.frontMatter.title}</span>
             </nav>
 
             {/* Title */}
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                {post.title}
+                {post.frontMatter.title}
               </h1>
               <p className="text-xl text-muted-foreground">
-                {post.description}
+                {post.frontMatter.description}
               </p>
             </div>
 
@@ -202,59 +143,49 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <User className="h-4 w-4" />
-                <span>{post.author.name}</span>
+                <span>{post.frontMatter.author || siteConfig.author}</span>
               </div>
               <div className="flex items-center gap-1">
                 <CalendarDays className="h-4 w-4" />
-                <span>{formatDate(post.publishedAt)}</span>
+                <span>{formatDate(post.frontMatter.date)}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
-                <span>{post.readingTime} 分钟阅读</span>
+                <span>{post.readingTime.minutes} 分钟阅读</span>
               </div>
-              {post.views && (
-                <div className="flex items-center gap-1">
-                  <Eye className="h-4 w-4" />
-                  <span>{post.views} 次浏览</span>
-                </div>
-              )}
             </div>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Link href={`/tags/${tag}`}>
-                  <Badge key={tag} variant="secondary">
-                    <Tag className="h-3 w-3 mr-1" />
-                    {tag}
-                  </Badge>
-                </Link>
-              ))}
-            </div>
+            {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {post.frontMatter.tags.map((tag) => (
+                  <Link key={tag} href={`/tags/${tag}`}>
+                    <Badge variant="secondary">
+                      <Tag className="h-3 w-3 mr-1" />
+                      {tag}
+                    </Badge>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MobileToc />
                 <ArticleShare
-                  title={post.title}
-                  description={post.description}
+                  title={post.frontMatter.title}
+                  description={post.frontMatter.description}
                 />
               </div>
-              {post.likes && (
-                <Button variant="ghost" size="sm">
-                  <Heart className="h-4 w-4 mr-1" />
-                  {post.likes}
-                </Button>
-              )}
             </div>
 
             {/* Cover Image */}
-            {post.coverImage && (
+            {post.frontMatter.image && (
               <div className="aspect-video rounded-lg overflow-hidden">
                 <img
-                  src={post.coverImage}
-                  alt={post.title}
+                  src={post.frontMatter.image}
+                  alt={post.frontMatter.title}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -265,31 +196,23 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Content */}
           <div className="prose prose-lg dark:prose-invert max-w-none">
-            <div>{post.content}</div>
+            <MDXRemote source={post.content} components={components} />
           </div>
 
           <Separator />
 
           {/* Post Footer */}
           <div className="space-y-8">
-            {/* Update Info */}
-            {post.updatedAt && post.updatedAt !== post.publishedAt && (
-              <div className="text-sm text-muted-foreground">
-                最后更新于 {formatDate(post.updatedAt)}
-              </div>
-            )}
-
             {/* Author Card */}
             <AuthorCard
-              name={post.author.name}
-              bio={post.author.bio || undefined}
-              avatar={post.author.avatar || undefined}
+              name={post.frontMatter.author || siteConfig.author}
+              bio="全栈开发工程师，专注于前端技术和用户体验"
             />
 
             {/* Share */}
             <ArticleShare
-              title={post.title}
-              description={post.description}
+              title={post.frontMatter.title}
+              description={post.frontMatter.description}
             />
           </div>
 
@@ -303,10 +226,10 @@ export default async function PostPage({ params }: PostPageProps) {
                 <RelatedPosts
                   posts={relatedPosts.map(p => ({
                     id: p.slug,
-                    title: p.title,
+                    title: p.frontMatter.title,
                     slug: p.slug,
-                    excerpt: p.description,
-                    date: p.publishedAt,
+                    excerpt: p.frontMatter.description,
+                    date: p.frontMatter.date,
                   }))}
                 />
               </Suspense>
@@ -338,9 +261,8 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Post Meta */}
           <PostMeta
-            date={post.publishedAt}
-            readingTime={`${post.readingTime} 分钟`}
-            views={post.views || undefined}
+            date={post.frontMatter.date}
+            readingTime={post.readingTime.text}
           />
         </aside>
       </div>

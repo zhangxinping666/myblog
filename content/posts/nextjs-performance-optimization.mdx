@@ -1,0 +1,153 @@
+---
+title: Next.js 性能优化实战
+description: 从图片优化、代码分割到缓存策略，全面提升 Next.js 应用性能
+date: 2024-01-22
+published: true
+category: 性能优化
+tags:
+  - Next.js
+  - 性能优化
+  - Web Vitals
+  - SEO
+---
+
+# Next.js 性能优化实战
+
+在构建现代 Web 应用时，性能是用户体验的关键因素。本文将分享一些 Next.js 应用的性能优化技巧。
+
+## 图片优化
+
+### 使用 next/image 组件
+
+```jsx
+import Image from 'next/image'
+
+export default function Hero() {
+  return (
+    <Image
+      src="/hero.jpg"
+      alt="Hero image"
+      width={1920}
+      height={1080}
+      priority
+      placeholder="blur"
+      blurDataURL={dataUrl}
+    />
+  )
+}
+```
+
+### 响应式图片
+
+```jsx
+<Image
+  src="/product.jpg"
+  alt="Product"
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  fill
+  className="object-cover"
+/>
+```
+
+## 代码分割策略
+
+### 动态导入
+
+```typescript
+const DynamicComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <Skeleton />,
+  ssr: false
+})
+```
+
+### 路由级代码分割
+
+Next.js 自动为每个路由进行代码分割，但我们可以进一步优化：
+
+```typescript
+// 预加载关键路由
+import { useRouter } from 'next/router'
+
+const router = useRouter()
+router.prefetch('/important-page')
+```
+
+## 数据获取优化
+
+### 使用 ISR（增量静态再生）
+
+```typescript
+export async function getStaticProps() {
+  const data = await fetchData()
+  
+  return {
+    props: { data },
+    revalidate: 60 // 每60秒重新生成页面
+  }
+}
+```
+
+### 并行数据获取
+
+```typescript
+export async function getServerSideProps() {
+  const [posts, comments, users] = await Promise.all([
+    fetchPosts(),
+    fetchComments(),
+    fetchUsers()
+  ])
+  
+  return {
+    props: { posts, comments, users }
+  }
+}
+```
+
+## 缓存策略
+
+### API 路由缓存
+
+```typescript
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate')
+  
+  const data = await fetchData()
+  res.json(data)
+}
+```
+
+## Web Vitals 优化
+
+监控和优化核心 Web 指标：
+
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms  
+- **CLS (Cumulative Layout Shift)**: < 0.1
+
+```typescript
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  if (metric.label === 'web-vital') {
+    console.log(metric)
+    // 发送到分析服务
+  }
+}
+```
+
+## 打包优化
+
+```javascript
+// next.config.js
+module.exports = {
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  },
+  experimental: {
+    optimizeCss: true
+  }
+}
+```
+
+## 总结
+
+性能优化是一个持续的过程。通过合理使用 Next.js 提供的优化特性，我们可以构建出快速、高效的 Web 应用。记住，测量是优化的第一步！

@@ -133,8 +133,6 @@ export default function HomePage() {
       </section>
 
       <Separator />
-
-      {/* Newsletter Section */}
       <section className="max-w-2xl mx-auto">
         <Newsletter variant="card" />
       </section>

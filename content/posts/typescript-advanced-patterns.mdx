@@ -1,0 +1,159 @@
+---
+title: TypeScript 高级模式与技巧
+description: 探索 TypeScript 的高级类型系统，包括泛型、条件类型、映射类型等实用技巧
+date: 2024-01-18
+published: true
+category: 前端开发
+tags:
+  - TypeScript
+  - 类型系统
+  - 设计模式
+author: 李四
+---
+
+# TypeScript 高级模式与技巧
+
+TypeScript 的类型系统非常强大，掌握高级模式可以让你的代码更安全、更易维护。
+
+## 泛型的妙用
+
+### 泛型约束
+
+```typescript
+interface Lengthwise {
+  length: number
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+  console.log(arg.length)
+  return arg
+}
+```
+
+### 泛型工具类型
+
+```typescript
+// 创建可选类型
+type Optional<T> = {
+  [K in keyof T]?: T[K]
+}
+
+// 创建只读类型
+type Readonly<T> = {
+  readonly [K in keyof T]: T[K]
+}
+```
+
+## 条件类型
+
+条件类型让我们可以根据条件选择不同的类型：
+
+```typescript
+type IsString<T> = T extends string ? true : false
+
+type Result1 = IsString<'hello'>  // true
+type Result2 = IsString<42>        // false
+
+// 更实用的例子
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
+
+type Data = UnwrapPromise<Promise<string>>  // string
+```
+
+## 映射类型
+
+映射类型可以基于旧类型创建新类型：
+
+```typescript
+// 将所有属性变为可选
+type Partial<T> = {
+  [P in keyof T]?: T[P]
+}
+
+// 将所有属性变为必需
+type Required<T> = {
+  [P in keyof T]-?: T[P]
+}
+
+// 选择部分属性
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P]
+}
+```
+
+## Template Literal Types
+
+TypeScript 4.1 引入的模板字面量类型：
+
+```typescript
+type EventName<T extends string> = `on${Capitalize<T>}`
+
+type ClickEvent = EventName<'click'>  // 'onClick'
+type ChangeEvent = EventName<'change'>  // 'onChange'
+
+// 更复杂的例子
+type PropEventSource<Type> = {
+  on<Key extends string & keyof Type>(
+    eventName: `${Key}Changed`,
+    callback: (newValue: Type[Key]) => void
+  ): void
+}
+```
+
+## 实用的类型守卫
+
+```typescript
+// 自定义类型守卫
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
+// 使用 in 操作符
+interface Bird {
+  fly(): void
+  layEggs(): void
+}
+
+interface Fish {
+  swim(): void
+  layEggs(): void
+}
+
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined
+}
+```
+
+## 装饰器模式
+
+```typescript
+function Log(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  const method = descriptor.value
+  
+  descriptor.value = function(...args: any[]) {
+    console.log(`Calling ${propertyName} with`, args)
+    const result = method.apply(this, args)
+    console.log(`Result:`, result)
+    return result
+  }
+}
+
+class Calculator {
+  @Log
+  add(a: number, b: number) {
+    return a + b
+  }
+}
+```
+
+## 最佳实践
+
+1. **优先使用 interface 而非 type**（除非需要联合类型）
+2. **使用 const assertions** 获得更精确的类型
+3. **善用 utility types**（Partial, Required, Pick, Omit 等）
+4. **避免使用 any**，使用 unknown 代替
+5. **启用严格模式**（strict: true）
+
+## 总结
+
+TypeScript 的高级特性为我们提供了强大的工具来构建类型安全的应用。合理使用这些模式，可以大大提高代码质量和开发效率。

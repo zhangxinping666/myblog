@@ -14,7 +14,6 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // 记录错误到监控系统
     console.error('Site error:', error)
   }, [error])
 

@@ -1,0 +1,100 @@
+---
+title: React Hooks 最佳实践指南
+description: 深入探讨 React Hooks 的使用技巧，避免常见陷阱，提升组件性能和代码质量
+date: 2024-01-25
+published: true
+category: 前端开发
+tags:
+  - React
+  - Hooks
+  - 最佳实践
+  - 性能优化
+author: 张三
+---
+
+# React Hooks 最佳实践指南
+
+React Hooks 自从 16.8 版本推出以来，已经成为 React 开发的主流方式。本文将分享一些在实际项目中总结的最佳实践。
+
+## 常用 Hooks 解析
+
+### useState 的正确使用
+
+```typescript
+// ❌ 错误：直接修改状态
+const [user, setUser] = useState({ name: 'John', age: 30 })
+user.name = 'Jane' // 这样不会触发重新渲染
+
+// ✅ 正确：创建新对象
+setUser({ ...user, name: 'Jane' })
+```
+
+### useEffect 的依赖管理
+
+```typescript
+// ❌ 错误：忽略依赖项
+useEffect(() => {
+  fetchData(userId)
+}, []) // 缺少 userId 依赖
+
+// ✅ 正确：包含所有依赖
+useEffect(() => {
+  fetchData(userId)
+}, [userId])
+```
+
+## 性能优化技巧
+
+### 使用 useMemo 优化计算
+
+```typescript
+const expensiveValue = useMemo(() => {
+  return computeExpensiveValue(a, b)
+}, [a, b])
+```
+
+### 使用 useCallback 优化函数
+
+```typescript
+const handleClick = useCallback(() => {
+  doSomething(value)
+}, [value])
+```
+
+## 自定义 Hooks
+
+创建可复用的逻辑是 Hooks 的强大之处：
+
+```typescript
+function useLocalStorage(key: string, initialValue: any) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      return initialValue
+    }
+  })
+
+  const setValue = (value: any) => {
+    try {
+      setStoredValue(value)
+      window.localStorage.setItem(key, JSON.stringify(value))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return [storedValue, setValue]
+}
+```
+
+## 常见陷阱和解决方案
+
+1. **闭包陷阱**：在定时器或异步操作中访问旧的状态值
+2. **过度使用 useEffect**：很多逻辑可以在事件处理器中完成
+3. **忽视清理函数**：造成内存泄漏
+
+## 总结
+
+React Hooks 提供了更简洁和强大的方式来管理组件状态和副作用。遵循这些最佳实践，可以写出更高质量、更易维护的代码。

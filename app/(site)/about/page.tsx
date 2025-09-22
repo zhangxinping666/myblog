@@ -22,11 +22,11 @@ export default function AboutPage() {
             <span className="text-4xl font-bold text-white">ZS</span>
           </div>
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-bold">张三</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">zhangxinping</h1>
             <p className="text-xl text-muted-foreground">全栈开发工程师</p>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            专注于现代 Web 技术，喜欢探索新技术、分享经验和构建有价值的产品。
+            专注于现代 Web 技术，喜欢探索新技术、热爱前端。
             热爱开源，相信技术能让世界更美好。
           </p>
         </div>
@@ -55,7 +55,6 @@ export default function AboutPage() {
 
       <Separator />
 
-      {/* About Me */}
       <section className="space-y-8">
         <h2 className="text-3xl font-bold text-center">关于我</h2>
         
@@ -71,15 +70,15 @@ export default function AboutPage() {
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span>北京, 中国</span>
+                  <span>河南, 中国</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span>5+ 年开发经验</span>
+                  <span>一名在校大学生</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Award className="h-4 w-4 text-muted-foreground" />
-                  <span>计算机科学学士学位</span>
+                  <span>一个喜欢拍照的girl</span>
                 </div>
               </div>
             </CardContent>
@@ -107,7 +106,7 @@ export default function AboutPage() {
 
         <div className="prose prose-lg dark:prose-invert max-w-none">
           <p>
-            你好！我是张三，一名充满热情的全栈开发工程师。从 2019 年开始我的编程之旅，
+            你好！我是张三，一名充满热情的前端开发工程师。从 2019 年开始我的编程之旅，
             至今已有 5 年的专业开发经验。我专注于现代 Web 技术，特别是 React 生态系统。
           </p>
           <p>

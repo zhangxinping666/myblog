@@ -11,9 +11,16 @@ export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
 
-export interface MainNavItem extends NavItem {}
+export interface MainNavItem extends NavItem {
+  title: string;
+  href:string;
+}
 
-export interface SidebarNavItem extends NavItemWithChildren {}
+export interface SidebarNavItem extends NavItemWithChildren {
+  title: string;
+  href:string;
+  items: SidebarNavItem[];
+}
 
 // 主导航配置
 export const mainNav: MainNavItem[] = [

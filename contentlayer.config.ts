@@ -1,80 +1,18 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
-import rehypePrettyCode from 'rehype-pretty-code'
-import remarkGfm from 'remark-gfm'
+// Contentlayer 配置暂时注释掉，使用自定义 MDX 处理
+// 由于版本兼容性问题，我们使用 lib/mdx/mdx.ts 中的自定义处理
 
-export const Post = defineDocumentType(() => ({
-  name: 'Post',
-  filePathPattern: `**/*.mdx`,
-  contentType: 'mdx',
-  fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    description: {
-      type: 'string',
-      required: true,
-    },
-    date: {
-      type: 'date',
-      required: true,
-    },
-    published: {
-      type: 'boolean',
-      default: true,
-    },
-    category: {
-      type: 'string',
-      required: false,
-    },
-    tags: {
-      type: 'list',
-      of: { type: 'string' },
-      required: false,
-    },
-    image: {
-      type: 'string',
-      required: false,
-    },
-  },
-  computedFields: {
-    slug: {
-      type: 'string',
-      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
-    },
-    url: {
-      type: 'string',
-      resolve: (post) => `/posts/${post._raw.sourceFileName.replace(/\.mdx$/, '')}`,
-    },
-    readingTime: {
-      type: 'number',
-      resolve: (post) => {
-        const wordsPerMinute = 200
-        const words = post.body.raw.split(/\s+/g).length
-        const readingTime = Math.ceil(words / wordsPerMinute)
-        return readingTime
-      },
-    },
-  },
-}))
+// export const Post = defineDocumentType(() => ({
+//   name: 'Post',
+//   filePathPattern: `**/*.mdx`,
+//   contentType: 'mdx',
+//   // ... 配置内容
+// }))
 
-export default makeSource({
-  contentDirPath: 'content/posts',
-  documentTypes: [Post],
-  mdx: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      [
-        rehypePrettyCode,
-        {
-          theme: 'github-dark',
-          onVisitLine(node) {
-            if (node.children.length === 0) {
-              node.children = [{ type: 'text', value: ' ' }]
-            }
-          },
-        },
-      ],
-    ],
-  },
-})
+// export default makeSource({
+//   contentDirPath: 'content/posts',
+//   documentTypes: [Post],
+// })
+
+// 导出空配置以避免构建错误
+export const Post = null
+export default null
