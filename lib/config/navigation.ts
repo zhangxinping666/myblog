@@ -48,10 +48,6 @@ export const mainNav: MainNavItem[] = [
     title: "关于",
     href: "/about",
   },
-  {
-    title: "联系",
-    href: "/contact",
-  },
 ]
 
 // 侧边栏导航配置
@@ -105,10 +101,7 @@ export const footerNav = {
       title: "关于",
       href: "/about",
     },
-    {
-      title: "联系",
-      href: "/contact",
-    },
+
   ],
   social: [
     {

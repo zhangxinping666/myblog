@@ -20,7 +20,7 @@ export function RelatedPosts({ posts, title = '相关文章' }: RelatedPostsProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle suppressHydrationWarning>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -30,7 +30,10 @@ export function RelatedPosts({ posts, title = '相关文章' }: RelatedPostsProp
               href={`/posts/${post.slug}`}
               className="block space-y-1 group"
             >
-              <h4 className="font-medium group-hover:text-primary transition-colors">
+              <h4 
+                className="font-medium group-hover:text-primary transition-colors"
+                suppressHydrationWarning
+              >
                 {post.title}
               </h4>
               {post.excerpt && (

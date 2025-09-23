@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 interface ShareData {
   title: string
@@ -140,22 +140,24 @@ function ShareButton({ platform, icon, label, url, className, onClick }: ShareBu
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn('flex items-center gap-2', className)}
-          onClick={handleClick}
-        >
-          {icon}
-          <span className="sr-only md:not-sr-only">{label}</span>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>分享到{label}</p>
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className={cn('flex items-center gap-2', className)}
+            onClick={handleClick}
+          >
+            {icon}
+            <span className="sr-only md:not-sr-only">{label}</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>分享到{label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 
@@ -182,28 +184,30 @@ function CopyLinkButton({ url, className }: { url: string; className?: string })
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn('flex items-center gap-2', className)}
-          onClick={handleCopy}
-        >
-          {copied ? (
-            <Check className="h-4 w-4 text-green-600" />
-          ) : (
-            <Copy className="h-4 w-4" />
-          )}
-          <span className="sr-only md:not-sr-only">
-            {copied ? '已复制' : '复制链接'}
-          </span>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{copied ? '链接已复制到剪贴板' : '复制链接'}</p>
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className={cn('flex items-center gap-2', className)}
+            onClick={handleCopy}
+          >
+            {copied ? (
+              <Check className="h-4 w-4 text-green-600" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+            <span className="sr-only md:not-sr-only">
+              {copied ? '已复制' : '复制链接'}
+            </span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{copied ? '链接已复制到剪贴板' : '复制链接'}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 

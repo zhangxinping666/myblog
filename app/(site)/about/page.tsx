@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Newsletter } from '@/components/features/newsletter'
 
 export const metadata: Metadata = {
   title: '关于我',
@@ -108,15 +107,12 @@ export default function AboutPage() {
           <p>
             你好！我是张三，一名充满热情的前端开发工程师。从 2019 年开始我的编程之旅，
             至今已有 5 年的专业开发经验。我专注于现代 Web 技术，特别是 React 生态系统。
-          </p>
-          <p>
             我相信技术应该为人类服务，让生活更美好。在开发过程中，我注重代码质量、
             用户体验和团队协作。我热爱学习新技术，分享知识，并积极参与开源社区。
-          </p>
-          <p>
             除了编程，我还喜欢摄影、旅行和阅读。这些爱好不仅丰富了我的生活，
             也为我的工作带来了新的视角和创意。
           </p>
+
         </div>
       </section>
 
@@ -160,9 +156,6 @@ export default function AboutPage() {
                 <Badge>Node.js</Badge>
                 <Badge>Express</Badge>
                 <Badge>NestJS</Badge>
-                <Badge>GraphQL</Badge>
-                <Badge>PostgreSQL</Badge>
-                <Badge>MongoDB</Badge>
               </div>
             </CardContent>
           </Card>
@@ -180,9 +173,7 @@ export default function AboutPage() {
                 <Badge>Git</Badge>
                 <Badge>Docker</Badge>
                 <Badge>Vercel</Badge>
-                <Badge>AWS</Badge>
                 <Badge>VS Code</Badge>
-                <Badge>Figma</Badge>
               </div>
             </CardContent>
           </Card>
@@ -200,8 +191,8 @@ export default function AboutPage() {
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
-                  <CardTitle>高级前端工程师</CardTitle>
-                  <CardDescription>科技有限公司</CardDescription>
+                  <CardTitle>前端工程师</CardTitle>
+                  <CardDescription>乐知有限公司</CardDescription>
                 </div>
                 <Badge variant="secondary">2022 - 至今</Badge>
               </div>
@@ -215,39 +206,16 @@ export default function AboutPage() {
               </ul>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle>全栈开发工程师</CardTitle>
-                  <CardDescription>创业公司</CardDescription>
-                </div>
-                <Badge variant="secondary">2020 - 2022</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                <li>独立负责产品的前后端开发</li>
-                <li>设计和实现 RESTful API</li>
-                <li>参与产品设计和技术选型</li>
-                <li>维护和优化服务器基础设施</li>
-              </ul>
-            </CardContent>
-          </Card>
         </div>
       </section>
 
       <Separator />
-
-      {/* Contact */}
       <section className="space-y-8">
-        <h2 className="text-3xl font-bold text-center">联系我</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
             <p className="text-lg text-muted-foreground">
-              如果你对我的项目感兴趣，或者想要合作、交流技术，欢迎通过以下方式联系我：
+              如果你对我的项目感兴趣，或者想要合作、交流技术，欢迎contact me：
             </p>
             
             <div className="space-y-4">
@@ -278,8 +246,6 @@ export default function AboutPage() {
               </a>
             </div>
           </div>
-
-          <Newsletter variant="card" />
         </div>
       </section>
     </div>

@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/utils/format'
 
-interface PostCardProps {
+export interface PostCardProps {
   id: string
   title: string
   slug: string

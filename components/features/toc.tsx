@@ -4,7 +4,6 @@ import * as React from 'react'
 import { List, ChevronRight } from 'lucide-react'
 
 import { cn } from '@/lib/utils/cn'
-import { useScrollState } from '@/lib/hooks/use-scroll'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -38,18 +37,30 @@ interface TocItemProps {
 
 // 从DOM中提取标题生成目录
 export function generateTocFromDOM(containerSelector = 'main'): TocItem[] {
-  if (typeof window === 'undefined') return []
+  if (typeof window === 'undefined') {
+    console.log('Window undefined, returning empty TOC')
+    return []
+  }
 
+  console.log('Looking for container:', containerSelector)
   const container = document.querySelector(containerSelector)
-  if (!container) return []
+  if (!container) {
+    console.log('Container not found:', containerSelector)
+    return []
+  }
 
+  console.log('Container found:', container)
   const headings = container.querySelectorAll('h1, h2, h3, h4, h5, h6')
+  console.log('Found headings:', headings.length)
+  
   const items: TocItem[] = []
 
-  headings.forEach((heading) => {
+  headings.forEach((heading, index) => {
     const level = parseInt(heading.tagName.charAt(1))
     const id = heading.id || generateIdFromText(heading.textContent || '')
     const title = heading.textContent || ''
+
+    console.log(`Heading ${index}:`, { level, id, title, tagName: heading.tagName })
 
     // 确保标题有ID，用于锚点导航
     if (!heading.id) {
@@ -63,7 +74,9 @@ export function generateTocFromDOM(containerSelector = 'main'): TocItem[] {
     })
   })
 
-  return buildTocTree(items)
+  const tree = buildTocTree(items)
+  console.log('Final TOC tree:', tree)
+  return tree
 }
 
 // 从文本生成ID
@@ -210,49 +223,86 @@ export function StickyToc({ className, containerSelector = 'main' }: {
   // 生成目录
   React.useEffect(() => {
     const generateToc = () => {
+      console.log('Generating TOC for container:', containerSelector) // 调试日志
       const tocItems = generateTocFromDOM(containerSelector)
+      console.log('Generated TOC items:', tocItems) // 调试日志
       setItems(tocItems)
     }
 
-    // 延迟生成，确保DOM已渲染
-    const timer = setTimeout(generateToc, 100)
-    return () => clearTimeout(timer)
+    // 多次尝试生成目录，确保DOM已渲染
+    const timer1 = setTimeout(generateToc, 100)
+    const timer2 = setTimeout(generateToc, 500)
+    const timer3 = setTimeout(generateToc, 1000)
+    
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+      clearTimeout(timer3)
+    }
   }, [containerSelector])
 
   // 监听滚动，更新活跃项
-  const { y: scrollY } = useScrollState()
-
   React.useEffect(() => {
     if (items.length === 0) return
 
-    const headings = items.flatMap(function flattenItems(item: TocItem): TocItem[] {
-      return [item, ...(item.children?.flatMap(flattenItems) || [])]
-    })
+    const handleScroll = () => {
+      const headings = items.flatMap(function flattenItems(item: TocItem): TocItem[] {
+        return [item, ...(item.children?.flatMap(flattenItems) || [])]
+      })
 
-    // 找到当前视口中的标题
-    let currentActiveId = ''
-    for (const item of headings) {
-      const element = document.getElementById(item.id)
-      if (element) {
-        const rect = element.getBoundingClientRect()
-        if (rect.top <= 100) {
-          currentActiveId = item.id
-        } else {
-          break
+      // 找到当前视口中的标题
+      let currentActiveId = ''
+      for (const item of headings) {
+        const element = document.getElementById(item.id)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          if (rect.top <= 150) { // 增加阈值
+            currentActiveId = item.id
+          } else {
+            break
+          }
         }
       }
+
+      setActiveId(currentActiveId)
     }
 
-    setActiveId(currentActiveId)
-  }, [scrollY, items])
+    // 直接监听滚动事件，不依赖useScrollState
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // 初始执行
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [items])
+
+  console.log('StickyToc render - items:', items.length, 'activeId:', activeId) // 调试日志
 
   if (items.length === 0) {
-    return null
+    return (
+      <div className={cn(
+        'sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto',
+        'transition-all duration-200 ease-in-out',
+        'scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent',
+        className
+      )}>
+        <div className="p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg">
+          <div className="text-sm text-muted-foreground">正在加载目录...</div>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className={cn('sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto', className)}>
-      <Toc items={items} activeId={activeId} />
+    <div className={cn(
+      'sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto',
+      'transition-all duration-200 ease-in-out',
+      'scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent',
+      className
+    )}>
+      <div className="p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg">
+        <Toc items={items} activeId={activeId} />
+      </div>
     </div>
   )
 }

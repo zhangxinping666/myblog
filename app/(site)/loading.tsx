@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 export default function Loading() {
   return (
     <div className="container py-8 space-y-8">
-      {/* Hero Section Skeleton */}
       <section className="text-center space-y-6">
         <div className="space-y-4">
           <Skeleton className="h-16 w-96 mx-auto" />
@@ -15,8 +14,6 @@ export default function Loading() {
           <Skeleton className="h-12 w-32" />
         </div>
       </section>
-
-      {/* Content Skeleton */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <Skeleton className="h-8 w-32" />

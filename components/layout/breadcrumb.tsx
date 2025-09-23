@@ -48,9 +48,6 @@ function generateBreadcrumbsFromPath(pathname: string): BreadcrumbItem[] {
       case 'about':
         title = '关于'
         break
-      case 'contact':
-        title = '联系'
-        break
       case 'uses':
         title = '工具'
         break

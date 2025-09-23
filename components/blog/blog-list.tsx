@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getAllPosts, getPostsByCategory, getPostsByTag } from '@/lib/mdx/mdx'
 import { PostCard } from './blog-card'
+import type { PostCardProps } from './blog-card'
 
 export async function BlogList({ 
   category, 
@@ -41,8 +42,7 @@ export async function BlogList({
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayPosts.map((post) => {
-          const cardProps: any = {
-            key: post.slug,
+          const cardProps: PostCardProps = {
             id: post.slug,
             title: post.frontMatter.title,
             slug: post.slug,
@@ -64,7 +64,7 @@ export async function BlogList({
             cardProps.image = post.frontMatter.image
           }
           
-          return <PostCard {...cardProps} />
+          return <PostCard key={post.slug} {...cardProps} />
         })}
       </div>
       

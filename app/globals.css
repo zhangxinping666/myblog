@@ -2,6 +2,101 @@
 @import '../styles/prose.css';
 @import '../styles/syntax-highlighting.css';
 
+/* 代码块样式修复 - 彻底移除白色横线和优化显示 */
+
+/* 禁用 prose 中的链接下划线对代码的影响 */
+.prose a code,
+.prose code,
+.prose pre,
+code[class*="language-"],
+pre[class*="language-"],
+.prose pre *,
+.prose code * {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  border-bottom: none !important;
+  text-underline-offset: unset !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* react-syntax-highlighter 特定样式 */
+div[class*="react-syntax-highlighter"],
+div[class*="react-syntax-highlighter"] code,
+div[class*="react-syntax-highlighter"] pre,
+div[class*="react-syntax-highlighter"] span,
+div[class*="react-syntax-highlighter"] *,
+[data-language] *,
+.token,
+.token * {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  text-underline-offset: unset !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* 彻底禁用所有可能的下划线来源 */
+.prose .react-syntax-highlighter *,
+.prose [class*="language-"] *,
+.prose code *,
+.prose pre * {
+  border-bottom: none !important;
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 覆盖 prose.css 中的 a 样式对代码的影响 */
+.prose pre a,
+.prose code a,
+.prose a code,
+.prose a pre {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+/* 禁用 syntax-highlighting.css 的部分冲突样式 */
+.prose .token.function {
+  border-bottom: none !important;
+}
+
+/* 强制清除所有可能的装饰效果 */
+code, pre, .hljs, .hljs *, .token, .token *, 
+[class*="language-"], [class*="language-"] *,
+div[class*="react-syntax-highlighter"] span {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* 专门针对我们的代码块包装器 */
+.code-block-wrapper,
+.code-block-wrapper *,
+.code-block-wrapper span,
+.code-block-wrapper code,
+.code-block-wrapper pre {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-underline-offset: unset !important;
+  text-decoration-skip: unset !important;
+  text-decoration-skip-ink: unset !important;
+}
+
 :root {
   /* 设计令牌 - 间距系统 */
   --spacing-xs: 0.25rem;

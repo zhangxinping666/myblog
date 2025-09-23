@@ -1,4 +1,3 @@
-import { withContentlayer } from 'next-contentlayer';
 import million from 'million/compiler';
 
 /** @type {import('next').NextConfig} */
@@ -150,4 +149,4 @@ const millionConfig = {
   },
 };
 
-export default million.next(withContentlayer(nextConfig), millionConfig);
+export default million.next(nextConfig, millionConfig);

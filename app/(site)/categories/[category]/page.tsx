@@ -25,12 +25,37 @@ interface CategoryPageProps {
 
 // 模拟获取分类数据
 async function getCategory(slug: string): Promise<Category | null> {
+  // URL解码处理中文
+  const decodedSlug = decodeURIComponent(slug)
+  
   const categories = {
+    '前端开发': {
+      name: '前端开发',
+      slug: '前端开发',
+      description: 'React, Vue, Next.js 等前端技术文章。包含组件开发、状态管理、性能优化、构建工具等相关内容。',
+      count: 2,
+      color: 'bg-blue-500',
+    },
+    '性能优化': {
+      name: '性能优化',
+      slug: '性能优化',
+      description: '网站性能优化、代码优化、构建优化等相关文章。',
+      count: 1,
+      color: 'bg-orange-500',
+    },
+    '技术': {
+      name: '技术',
+      slug: '技术',
+      description: '通用技术文章和技术思考。',
+      count: 1,
+      color: 'bg-purple-500',
+    },
+    // 保留英文slug兼容性
     'frontend': {
       name: '前端开发',
       slug: 'frontend',
       description: 'React, Vue, Next.js 等前端技术文章。包含组件开发、状态管理、性能优化、构建工具等相关内容。',
-      count: 24,
+      count: 2,
       color: 'bg-blue-500',
     },
     'backend': {
@@ -49,7 +74,7 @@ async function getCategory(slug: string): Promise<Category | null> {
     },
   }
   
-  return categories[slug as keyof typeof categories] || null
+  return categories[decodedSlug as keyof typeof categories] || categories[slug as keyof typeof categories] || null
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

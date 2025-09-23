@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { BlogList } from '@/components/blog/blog-list'
-import { Newsletter } from '@/components/features/newsletter'
 import { siteConfig } from '@/lib/config/site'
 
 export const metadata: Metadata = {
@@ -15,9 +14,8 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
-  return (
+  return ( 
     <div className="container py-8 space-y-12">
-      {/* Hero Section */}
       <section className="text-center space-y-6">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent">
@@ -27,11 +25,10 @@ export default function HomePage() {
             {siteConfig.description}
           </p>
         </div>
-        
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" asChild>
             <Link href="/posts">
-              <BookOpen className="mr-2 h-5 w-5" />
+              <BookOpen className="mr-2 h-5 w-5"/>
               阅读文章
             </Link>
           </Button>
@@ -43,10 +40,7 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
-
       <Separator />
-
-      {/* Latest Posts Section */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold">最新文章</h2>
@@ -57,18 +51,13 @@ export default function HomePage() {
             </Link>
           </Button>
         </div>
-        
         <Suspense fallback={<BlogListSkeleton />}>
           <BlogList showPagination={false} />
         </Suspense>
       </section>
-
       <Separator />
-
-      {/* Features Section */}
       <section className="space-y-6">
         <h2 className="text-3xl font-bold text-center">探索更多</h2>
-        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="group hover:shadow-lg transition-shadow">
             <CardHeader>
@@ -117,7 +106,7 @@ export default function HomePage() {
               </div>
               <CardTitle>关于我</CardTitle>
               <CardDescription>
-                了解我的技术背景和联系方式
+                了解我的技术背景
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -133,9 +122,6 @@ export default function HomePage() {
       </section>
 
       <Separator />
-      <section className="max-w-2xl mx-auto">
-        <Newsletter variant="card" />
-      </section>
     </div>
   )
 }

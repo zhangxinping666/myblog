@@ -382,11 +382,6 @@ export default function UsesPage() {
           </p>
         </div>
         <div className="flex gap-4 justify-center">
-          <Button asChild>
-            <Link href="/contact">
-              联系我
-            </Link>
-          </Button>
           <Button variant="outline" asChild>
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
               GitHub 讨论

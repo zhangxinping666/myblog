@@ -174,18 +174,6 @@ export interface CommentsResponse extends PaginatedResponse<Comment> {
   };
 }
 
-// 联系表单 API (/api/contact)
-export interface ContactFormRequest {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-  company?: string;
-  phone?: string;
-  source?: string;  
-  honeypot?: string; 
-}
-
 export interface ContactFormResponse extends BaseResponse {
   data: {
     messageId: string;
@@ -195,7 +183,6 @@ export interface ContactFormResponse extends BaseResponse {
 }
 
 // OG 图片生成 API (/api/og)
-
 export interface OGImageRequest {
   title: string;
   description?: string;
@@ -460,7 +447,9 @@ export interface PostGraphQL {
   };
 }
 
-export interface PostConnection extends Connection<PostGraphQL> {}
+export interface PostConnection extends Connection<PostGraphQL> {
+  name: string;
+}
 
 export interface PostInput {
   title: string;

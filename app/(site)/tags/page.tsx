@@ -95,7 +95,6 @@ export default function TagsPage() {
         </div>
       </div>
 
-      {/* Trending Tags */}
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-orange-500" />

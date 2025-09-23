@@ -26,11 +26,47 @@ interface TagPageProps {
 
 // 模拟获取标签数据
 async function getTag(slug: string): Promise<TagData | null> {
+  // URL解码处理中文
+  const decodedSlug = decodeURIComponent(slug)
+  
   const tags: Record<string, TagData> = {
+    'React': {
+      name: 'React',
+      slug: 'React',
+      count: 2,
+      description: 'React 是一个用于构建用户界面的 JavaScript 库。学习 React 组件、状态管理、Hooks 等核心概念。',
+      trending: true,
+      relatedTags: ['Next.js', 'TypeScript', 'Hooks']
+    },
+    'Next.js': {
+      name: 'Next.js',
+      slug: 'Next.js',
+      count: 2,
+      description: 'Next.js 是一个基于 React 的全栈框架，提供服务端渲染、静态生成等功能。',
+      trending: true,
+      relatedTags: ['React', 'TypeScript', '性能优化']
+    },
+    'TypeScript': {
+      name: 'TypeScript',
+      slug: 'TypeScript',
+      count: 2,
+      description: 'TypeScript 是 JavaScript 的超集，提供静态类型检查和更好的开发体验。',
+      trending: true,
+      relatedTags: ['React', 'Next.js', '类型系统']
+    },
+    '性能优化': {
+      name: '性能优化',
+      slug: '性能优化',
+      count: 2,
+      description: '网站性能优化技巧，包括代码优化、构建优化、运行时优化等。',
+      trending: true,
+      relatedTags: ['Next.js', 'Web Vitals']
+    },
+    // 保留英文slug兼容性
     'react': {
       name: 'React',
       slug: 'react',
-      count: 32,
+      count: 2,
       description: 'React 是一个用于构建用户界面的 JavaScript 库。学习 React 组件、状态管理、Hooks 等核心概念。',
       trending: true,
       relatedTags: ['javascript', 'nextjs', 'typescript', 'hooks']
@@ -60,7 +96,7 @@ async function getTag(slug: string): Promise<TagData | null> {
     }
   }
   
-  return tags[slug] || null
+  return tags[decodedSlug] || tags[slug] || null
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {

@@ -539,7 +539,6 @@ my-blog/
 - `app/(site)/projects/page.tsx` - 项目列表页
 - `app/(site)/projects/[slug]/page.tsx` - 项目详情页
 - `app/(site)/uses/page.tsx` - 装备清单页
-- `app/(site)/contact/page.tsx` - 联系页面
 - `app/not-found.tsx` - 404页面
 - `app/error.tsx` - 错误边界
 

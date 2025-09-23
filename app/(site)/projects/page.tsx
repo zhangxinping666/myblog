@@ -316,11 +316,6 @@ export default function ProjectsPage() {
               关注我的 GitHub
             </Link>
           </Button>
-          <Button variant="outline" asChild>
-            <Link href="/contact">
-              联系我
-            </Link>
-          </Button>
         </div>
       </section>
     </div>
